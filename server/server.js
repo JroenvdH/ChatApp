@@ -24,6 +24,21 @@ io.on('connection', (socket) => {
 	// 	createAt: 123
 	// }); //we're not listening here thus no callback. I create an obj. to emit
 
+//emit to particular user (newly connected user)
+	socket.emit('newMessage', {
+		from: 'Admin', 
+		text: 'Welcome to the chat app',
+		createdAt: new Date().getTime()
+	});
+
+//emit to everybody except particular user
+	socket.broadcast.emit('newMessage', {
+		from: 'Admin',
+		text: 'A new user joined the chat',
+		createdAt: new Date().getTime()
+	})
+
+//emit to everyone.
 	socket.on('createMessage', (message) => {
 		console.log('new Message created!',message);
 		io.emit('newMessage', {
@@ -31,6 +46,13 @@ io.on('connection', (socket) => {
 			text: message.text,
 			createdAt: new Date().getTime()
 		})
+
+// //broadcast is an ob with own emit method. It emits to everybody except sender. 
+// 		socket.broadcast.emit('newMessage', {
+// 			from: message.from,
+// 			text: message.text,
+// 			createdAt: new Date().getTime()
+// 		})
 	});
 
 	socket.on('disconnect',() => {
