@@ -18,25 +18,30 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
 	console.log('new user connected!');
 
-	socket.emit('newEmail', {
-		from: 'mike@example.com', 
-		text: 'test test',
-		createAt: 123
-	}); //we're not listening here thus no callback. I create an obj. to emit
+	// socket.emit('newEmail', {
+	// 	from: 'mike@example.com', 
+	// 	text: 'test test',
+	// 	createAt: 123
+	// }); //we're not listening here thus no callback. I create an obj. to emit
 
 	socket.on('createMessage', (message) => {
 		console.log('new Message created!',message);
+		io.emit('newMessage', {
+			from: message.from,
+			text: message.text,
+			createdAt: new Date().getTime()
+		})
 	});
 
 	socket.on('disconnect',() => {
 		console.log('client disconnected');
 	});
 
-	socket.emit('newMessage',{
-		from: 'John F. K.',
-		text: 'Ich bin ein berliner',
-		createdAt: 31432
-	});
+	// socket.emit('newMessage',{
+	// 	from: 'John F. K.',
+	// 	text: 'Ich bin ein berliner',
+	// 	createdAt: 31432
+	// });
 
 })
 

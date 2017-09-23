@@ -11,7 +11,7 @@ socket.on('newMessage', function(message) {
 	console.log('new message:', message);
 });
 
-socket.emit('createMessage', {
-	from: 'Bill C.',
-	text: 'i did have sex with that woman',
-});	
+// socket.emit('createMessage', {
+// 	from: 'Bill C.',
+// 	text: 'i did have sex with that woman',
+// });	
