@@ -5,6 +5,7 @@ const publicPath = path.join(__dirname, '../public');
 const express = require('express');
 const socketIO = require('socket.io');
 
+const {generateMessage} = require('./utils/message');
 const port = process.env.PORT || 3000;
 
 var app = express();
@@ -25,27 +26,16 @@ io.on('connection', (socket) => {
 	// }); //we're not listening here thus no callback. I create an obj. to emit
 
 //emit to particular user (newly connected user)
-	socket.emit('newMessage', {
-		from: 'Admin', 
-		text: 'Welcome to the chat app',
-		createdAt: new Date().getTime()
-	});
+	socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app'));
 
 //emit to everybody except particular user
-	socket.broadcast.emit('newMessage', {
-		from: 'Admin',
-		text: 'A new user joined the chat',
-		createdAt: new Date().getTime()
-	})
+	socket.broadcast.emit('newMessage', 
+	 generateMessage('Admin', 'A new user joined the chat')); 
 
 //emit to everyone.
 	socket.on('createMessage', (message) => {
 		console.log('new Message created!',message);
-		io.emit('newMessage', {
-			from: message.from,
-			text: message.text,
-			createdAt: new Date().getTime()
-		})
+		io.emit('newMessage', generateMessage(message.from, message.text));
 
 // //broadcast is an ob with own emit method. It emits to everybody except sender. 
 // 		socket.broadcast.emit('newMessage', {
