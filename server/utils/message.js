@@ -6,6 +6,5 @@ var generateMessage = (from, text) => {
 	};
 };
 
-console.log(generateMessage('me', 'text'));
 
 module.exports = {generateMessage} 

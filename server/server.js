@@ -33,9 +33,13 @@ io.on('connection', (socket) => {
 	 generateMessage('Admin', 'A new user joined the chat')); 
 
 //emit to everyone.
-	socket.on('createMessage', (message) => {
+	socket.on('createMessage', (message, callback) => {
 		console.log('new Message created!',message);
 		io.emit('newMessage', generateMessage(message.from, message.text));
+//callback acknowledges incoming req. and sends confirmation back. This fires the callback
+//function on the other side (client)
+		callback('this is from the server'); 
+
 
 // //broadcast is an ob with own emit method. It emits to everybody except sender. 
 // 		socket.broadcast.emit('newMessage', {
