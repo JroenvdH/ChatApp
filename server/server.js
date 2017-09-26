@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
 		io.emit('newMessage', generateMessage(message.from, message.text));
 //callback acknowledges incoming req. and sends confirmation back. This fires the callback
 //function on the other side (client)
-		callback('this is from the server'); 
+		callback(); 
 
 
 // //broadcast is an ob with own emit method. It emits to everybody except sender. 
