@@ -1,4 +1,22 @@
 var socket =io(); //innitiates request from client to open web socket(and keep open)
+
+function scrollToBottom () {
+	//selectors
+	var messages = jQuery('#messages');
+	var newMessage = messages.children('li:last-child')
+	//heights
+//.prop is a jQuery method. The args. are native to Javascript?
+	var clientHeight = messages.prop('clientHeight');
+	var scrollTop = messages.prop('scrollTop');
+	var scrollHeight = messages.prop('scrollHeight');
+	var newMessageHeight = newMessage.innerHeight();
+	var lastMessageHeight = newMessage.prev().innerHeight();
+
+	if(clientHeight + scrollTop +newMessageHeight +lastMessageHeight >= scrollHeight) {
+		messages.scrollTop(scrollHeight);
+	}
+}
+
 socket.on('connect', function () {
 	console.log('connected to server!');
 });
@@ -19,6 +37,7 @@ socket.on('newMessage', function(message) {
 	});
 
 	jQuery('#messages').append(html);
+	scrollToBottom();
 
 	// //moment takes createdAt as 0 benchmark
 	// var formattedTime = moment(message.createdAt).format('h:mm a');
@@ -37,6 +56,8 @@ socket.on('newLocationMessage', function(message) {
 		url: message.url
 	});
 	jQuery('#messages').append(html);
+
+	scrollToBottom();
 	
 	// var formattedTime = moment(message.createdAt).format('h:mm a');
 	// var li = jQuery('<li></li>');
